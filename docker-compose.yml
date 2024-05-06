@@ -6,8 +6,8 @@ services:
     build: 
       context: backend
       target: dev
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_URL=${POSTGRES_URL}
     volumes:
       - ./backend/src:/code/src
     ports:
@@ -20,8 +20,8 @@ services:
     build: 
       context: backend
       target: migration
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_URL=${POSTGRES_URL}
     depends_on:
       db:
         condition: service_healthy
@@ -30,8 +30,8 @@ services:
     build: 
       context: backend
       target: seed
-    env_file:
-      - .env
+    environment:
+      - POSTGRES_URL=${POSTGRES_URL}
     depends_on:
       migration:
         condition: service_completed_successfully
@@ -43,7 +43,11 @@ services:
       - .env
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
-      interval: 5s
+      interval: 1s
+
+  http-client:
+    image: badouralix/curl-jq
+    command: tail -F anything
   
   pgadmin:
     image: dpage/pgadmin4

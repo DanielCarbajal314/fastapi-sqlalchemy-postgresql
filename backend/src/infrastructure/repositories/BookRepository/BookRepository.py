@@ -1,6 +1,5 @@
 from sqlalchemy.orm import Session
 from ....database import Book
-from sqlalchemy.future import select
 from .GetBookParams import GetBookParams
 
 
