@@ -1,0 +1,40 @@
+[project]
+name = "scalable-path-test"
+version = "0.1"
+description = "Base Backend project"
+dependencies = [
+    "fastapi==0.103.2",
+    "python-dotenv==1.0.0",
+    "uvicorn[standard]",
+    "sqlalchemy==2.0.25",
+    "pydantic==2.5.3",
+    "alembic==1.13.1",
+    "psycopg2==2.9.9"
+]
+
+[project.optional-dependencies]
+dev = [
+    "black"
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | migrations
+  )/
+)
+'''
