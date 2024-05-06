@@ -47,7 +47,7 @@ services:
 
   http-client:
     image: badouralix/curl-jq
-    command: tail -F anything
+    tty: true
   
   pgadmin:
     image: dpage/pgadmin4
