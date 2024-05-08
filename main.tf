@@ -80,7 +80,10 @@ resource "google_cloud_run_service" "python_service" {
       }
     }
   }
-  depends_on = [ google_project_service.cloud_run_admin ]
+  depends_on = [ 
+    google_project_service.cloud_run_admin,
+    google_sql_database.main_database
+  ]
 }
 
 data "google_iam_policy" "noauth" {

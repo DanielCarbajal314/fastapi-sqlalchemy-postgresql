@@ -6,7 +6,6 @@ define get_terraform_docker_registry_url
 	$(eval DOCKER_REGISTRY_URL := $(shell terraform output docker_repository_url))
 endef
 
-
 up:
 	@docker compose up
 build:
