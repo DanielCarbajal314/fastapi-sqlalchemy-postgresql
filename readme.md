@@ -8,8 +8,8 @@ This command will:
 - Once the database is acception connections it will __run a container that will execute alembic migrations__ over postgresql database
 - Once the migration container exits, it will run a __data seeding container__ to populate Books Data
 - start a __pgadmin__ with the running database connection already stored on http://localhost:8080/ (After seeding container exited successfully)
-- start the __server container__ in develpment mode (fastapi watch mode) (After seeding container exited successfully)
-- start a __http-client container__ that hast [curl](https://curl.se/) and (jq)[https://jqlang.github.io/jq/] installed, to be used to query the book endpoint
+- start the __server container__ in develpment mode (fastapi watch mode) (After seeding container exited successfully). It runs on http://localhost:8000/. A working URL path is http://localhost:8000/books?size=10 
+- start a __http-client container__ that hast [curl](https://curl.se/) and [jq][https://jqlang.github.io/jq/] installed, to be used to query the book endpoint
 
 The app comes with a battery of Make commands to make Development and CI/CD leaner
 
@@ -50,18 +50,18 @@ This should show:
 ]
 ```
 #### Usefull commands for local development:
-__up__: Starts all the containers
-__build__:  Builds all the containers
-__down__: Stops the all containers
-__down-clear__: Stops the all containers and delete their state (clean database)
-__db-gui__: Opens a Browser on PgAdmin local URL
-__shell-to-server__:  Shells into the server
-__shell-to-server-api__: Shells into python console in the server
-__run-migrations__:  Runs the Alembic Migrations (Executed on Server Container)
-__add-migrations__: Add a Migration if Models Classes were updated (Executed on Server Container)
-__run-data-seeding__: Runs the Data Seeding process in the local Database
-__format__:  Runs black over all python code inside ./src path
-__get-from-api__: Execute a CURL over the specified PATH and format the response with jq
+- __up__: Starts all the containers
+- __build__:  Builds all the containers
+- __down__: Stops the all containers
+- __down-clear__: Stops the all containers and delete their state (clean database)
+- __db-gui__: Opens a Browser on PgAdmin local URL
+- __shell-to-server__:  Shells into the server
+- __shell-to-server-api__: Shells into python console in the server
+- __run-migrations__:  Runs the Alembic Migrations (Executed on Server Container)
+- __add-migrations__: Add a Migration if Models Classes were updated (Executed on Server Container)
+- __run-data-seeding__: Runs the Data Seeding process in the local Database
+- __format__:  Runs black over all python code inside ./src path
+- __get-from-api__: Execute a CURL over the specified PATH and format the response with jq
 
 ### Server Architecture
 This is a fastapi app, with some hexagonal architecture principles. It uses SQL Alchemy for Db access, but the persistan layer is abstracted with Repositories and Unit of work patterns. Fastapi helps with dependency inyection the the database connection. Aside from that we work with some CQS principles to create classes responsable for single use cases instead of a service layer with several application actions, which tend to be a class that becomes convoluted quite quickly.
@@ -87,10 +87,10 @@ db_password = "lopeZ20070331Lopez"
 
 This will create the infrastructure, run the migration/seeding docker compose over the created database and upload the server docker image that will be hosted on cloud run
 
-Also I created the command `make run-server-image-pointing-to-database` to run the hosted image version of the server app pointing to the Cloud SQL postgresql database instance.
+Also I created the command `make run-server-image-pointing-to-database` to run the hosted image version of the server app locally as a container, but pointing to the Cloud SQL postgresql database instance.
 
 #### Future Improvements
-- Right now the app has no unit or integration test, my idea is using something like Bruno to setup some Integration test in a docker container
+- Right now the app has no unit or integration test, my idea is using something like [Bruno](https://www.usebruno.com/) to setup some Integration test in a docker container
 - Terraform implementation is a bit slacky, it requires to use modules for a cleaner implementation of IaC
 - I want to move Terraform and gcloud CLI to be runned inside a container and to inject the GCP credentials
 
