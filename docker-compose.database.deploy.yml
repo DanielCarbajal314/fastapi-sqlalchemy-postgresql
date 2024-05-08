@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  migration:
+    build: 
+      context: backend
+      target: migration
+    environment:
+      - POSTGRES_URL=${CONNECTION_URL}
+
+  seed:
+    build: 
+      context: backend
+      target: seed
+    environment:
+      - POSTGRES_URL=${CONNECTION_URL}
+    depends_on:
+      migration:
+        condition: service_completed_successfully
